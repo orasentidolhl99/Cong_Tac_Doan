@@ -70,27 +70,28 @@ class LanguageIdentify:
 li = LanguageIdentify()
 
 
-@app.route('/')
-def ping():
-    return 'ok'
 
 
-@app.route('/start', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def start():
     if request.method == 'GET':
+        print("Chua XL")
         return render_template('index.html')
     else:
+        print("Đang Xl")
         try:
             txt = request.form['txt']
-            if not txt or len(txt) <= 10:
-                return render_template('index.html', error='Please type more than 10 characters!')
+            if not txt or len(txt) == 0:
+                return render_template('index.html', error='Please type characters!')
             _pred = li.pred(txt)
+            print("Xu Xong")
             return render_template('index.html', language=_pred['language'], language_code=_pred['language_code'],
                                    score=+_pred['score'], txt=txt)
         except:
+            print("Xl Loi")
             traceback.print_exc()
             return render_template('index.html', error='Unknown error has occurred, please try again!')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run()
